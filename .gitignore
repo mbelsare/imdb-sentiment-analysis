@@ -1,0 +1,5 @@
+venv/
+**/__pycache__/
+**/*.pyc
+.idea/
+buildops/sentiment_analysis/models/sentiment_model/**
