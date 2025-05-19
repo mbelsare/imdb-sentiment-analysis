@@ -1,4 +1,4 @@
-### IMDB Sentiment Analysis with Custom Loss Functions
+## IMDB Sentiment Analysis with Custom Loss Functions
 This project implements a sentiment analysis model for IMDB movie reviews using PyTorch and Hugging Face Transformers. 
 The implementation features custom loss functions that account for review length and prediction confidence to improve model performance.
 
