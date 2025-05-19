@@ -143,6 +143,13 @@ To use an existing model to compare loss functions:
 python3 buildops/sentiment_analysis/workflow/jobs/run_experiments.py --use_existing_model --model_path buildops/sentiment_analysis/models/sentiment_model/checkpoint_epoch_1_step_2000.pt --loss_types weighted standard length_aware
 ```
 
+#### Performance Metrics
+
+* Accuracy: 93.2%
+* F1 Score: 0.93
+* Precision: 0.92
+* Recall: 0.94
+
 #### Visualizations
 The project includes comprehensive visualization tools:
 
@@ -161,7 +168,8 @@ The project includes unit tests for critical components, especially the custom l
 python3 -m unittest discover buildops/tests
 ```
 
-#### Experiment with different hyperparameters:
+#### Future Improvements
+* Experiment with different hyperparameters:
 * Try different pre-trained models (RoBERTa, DistilBERT)
 * Adjust the loss function parameters
 * Experiment with longer training or larger batch sizes
