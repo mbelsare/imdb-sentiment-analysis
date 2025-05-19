@@ -110,7 +110,10 @@ Install dependencies:
 #### Training a Model
 
 * Make sure the virtual env `venv` is created and activated.
-* Before running training, make sure `buildops/sentiment_analysis/models/sentiment_model` directory exists. If not, just create it manually for example with `mkdir -p buildops/sentiment_analysis/models/sentiment_model`.
+* Before running training, make sure `buildops/sentiment_analysis/models/sentiment_model` directory exists. If not, just create it manually for example with 
+```
+mkdir -p buildops/sentiment_analysis/models/sentiment_model
+```
 
 ```
 python3 buildops/sentiment_analysis/workflow/jobs/model_trainer.py --epochs 5 --batch_size 16 --model_type transformer --loss_type combined
