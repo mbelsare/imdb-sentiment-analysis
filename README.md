@@ -105,23 +105,33 @@ Install dependencies:
 
 Make sure the virtual env `venv` is created and activated.
 
-```python3 buildops/sentiment_analysis/workflow/jobs/model_trainer.py --epochs 5 --batch_size 16 --model_type transformer --loss_type combined```
+```
+python3 buildops/sentiment_analysis/workflow/jobs/model_trainer.py --epochs 5 --batch_size 16 --model_type transformer --loss_type combined
+```
 * You can choose the loss type among `standard, length_aware, confidence_penalty, weighted, combined`
 
 If the training breaks after completing an epoch, you can use the `--resume` flag to resume training from the last checkpoint.
 
 #### Make predictions:
-```python3 buildops/sentiment_analysis/workflow/jobs/model_predictor.py --input "This movie was absolutely fantastic!"```
+```
+python3 buildops/sentiment_analysis/workflow/jobs/model_predictor.py --input "This movie was absolutely fantastic!"
+```
 
 To train a model with the custom loss function:
-```python3 buildops/sentiment_analysis/workflow/jobs/run_experiments.py --loss_types weighted --epochs 3```
+```
+python3 buildops/sentiment_analysis/workflow/jobs/run_experiments.py --loss_types weighted --epochs 3
+```
 
 #### Comparing Different Loss Functions
 To compare standard loss function with custom loss variants:
-```python3 buildops/sentiment_analysis/workflow/jobs/run_experiments.py --loss_types standard length_aware confidence_penalty weighted combined --epochs 3```
+```
+python3 buildops/sentiment_analysis/workflow/jobs/run_experiments.py --loss_types standard length_aware confidence_penalty weighted combined --epochs 3
+```
 
 To use an existing model to compare loss functions:
-```python3 buildops/sentiment_analysis/workflow/jobs/run_experiments.py --use_existing_model --model_path buildops/sentiment_analysis/models/sentiment_model/checkpoint_epoch_1_step_2000.pt --loss_types weighted standard length_aware```
+```
+python3 buildops/sentiment_analysis/workflow/jobs/run_experiments.py --use_existing_model --model_path buildops/sentiment_analysis/models/sentiment_model/checkpoint_epoch_1_step_2000.pt --loss_types weighted standard length_aware
+```
 
 #### Visualizations
 The project includes comprehensive visualization tools:
@@ -137,7 +147,9 @@ Example visualizations are automatically generated during the experiments and sa
 
 #### Unit Tests
 The project includes unit tests for critical components, especially the custom loss functions. To run the tests:
-```python3 -m unittest discover buildops/tests```
+```
+python3 -m unittest discover buildops/tests
+```
 
 #### Experiment with different hyperparameters:
 * Try different pre-trained models (RoBERTa, DistilBERT)
