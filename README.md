@@ -165,7 +165,7 @@ Example visualizations are automatically generated during the experiments and sa
 #### Unit Tests
 The project includes unit tests for critical components, especially the custom loss functions. To run the tests:
 ```
-python3 -m unittest discover buildops/tests
+python3 -m unittest discover buildops/sentiment_analysis/tests
 ```
 
 #### Future Improvements
