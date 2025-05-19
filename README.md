@@ -60,7 +60,7 @@ Understanding the custom loss function is the key to optimizing sentiment analys
 The core contribution of this project is the SentimentWeightedLoss class, which extends the standard `BCEWithLogitsLoss` with three important weighting mechanisms:
 
 #### 1. Review Length Weighting
-Movie reviews vary significantly in length, from a few sentences to several paragraphs. Our hypothesis is that:
+Movie reviews vary significantly in length, from a few sentences to several paragraphs. The hypothesis is that:
 
 Very short reviews might be too terse to provide adequate context
 Very long reviews might contain irrelevant information or repetition
@@ -71,7 +71,7 @@ length_weights = 1.0 + (review_lengths - 0.5) * self.length_weight_factor
 ```
 
 #### 2. Confidence Penalty
-Deep learning models can be overly confident in their incorrect predictions. Our loss function penalizes overconfident incorrect predictions more heavily to encourage better calibration:
+Deep learning models can be overly confident in their incorrect predictions. The loss function penalizes overconfident incorrect predictions more heavily to encourage better calibration:
 Calculate confidence as distance from decision boundary
 ```
 confidence = torch.abs(probs - 0.5) * 2  # Scale to [0, 1]
@@ -83,7 +83,7 @@ confidence_penalty = (1 - correct_predictions) * confidence * self.confidence_pe
 ```
 
 #### 3. Class Weighting
-For datasets with class imbalance, our loss function supports class-specific weights to give more importance to the minority class.
+For datasets with class imbalance, the loss function supports class-specific weights to give more importance to the minority class.
 
 ### Installation and Setup
 
