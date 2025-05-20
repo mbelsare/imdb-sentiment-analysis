@@ -53,6 +53,11 @@ def parse_args():
     parser.add_argument("--seed", type=int, default=42,
                         help="Random seed for reproducibility")
     parser.add_argument("--resume", action="store_true", help="Resume from latest checkpoint")
+    parser.add_argument("--evaluate-only", action="store_true",
+                        help="Skip training and only run evaluation")
+    parser.add_argument("--model-path", type=str,
+                        default="buildops/sentiment_analysis/models/sentiment_model/final_model.pt",
+                        help="Path to the model to evaluate")
 
     return parser.parse_args()
 
@@ -92,68 +97,75 @@ def main():
 
     # Move model to device
     model.to(device)
+    # If evaluate only, load the model and skip training
+    if args.evaluate_only:
+        logger.info(f"Loading model from {args.model_path}")
+        checkpoint = torch.load(args.model_path, map_location=device)
+        model.load_state_dict(checkpoint['model_state_dict'])
+        model.eval()
+    else:
 
-    # Log model information
-    num_params = count_model_parameters(model)
-    logger.info(f"Model: {args.model_type}")
-    logger.info(f"Number of trainable parameters: {num_params:,}")
+        # Log model information
+        num_params = count_model_parameters(model)
+        logger.info(f"Model: {args.model_type}")
+        logger.info(f"Number of trainable parameters: {num_params:,}")
 
-    # Create loss function
-    loss_fn = get_loss_function(
-        loss_type=args.loss_type,
-        length_weight_factor=0.2,
-        confidence_penalty_factor=0.1,
-        class_weights=CLASS_WEIGHTS
-    )
+        # Create loss function
+        loss_fn = get_loss_function(
+            loss_type=args.loss_type,
+            length_weight_factor=0.2,
+            confidence_penalty_factor=0.1,
+            class_weights=CLASS_WEIGHTS
+        )
 
-    # Create optimizer
-    optimizer = torch.optim.AdamW(model.parameters(), lr=args.learning_rate)
+        # Create optimizer
+        optimizer = torch.optim.AdamW(model.parameters(), lr=args.learning_rate)
 
-    # INSERT CHECKPOINT LOADING CODE HERE - before calling train_model
-    if args.resume:
-        checkpoint_dir = os.path.dirname(MODEL_SAVE_PATH + "/sentiment_model")
-        logger.info(f"Looking for checkpoints in: {checkpoint_dir}")
+        # INSERT CHECKPOINT LOADING CODE HERE - before calling train_model
+        if args.resume:
+            checkpoint_dir = os.path.dirname(MODEL_SAVE_PATH + "/sentiment_model")
+            logger.info(f"Looking for checkpoints in: {checkpoint_dir}")
 
-        if not os.path.exists(checkpoint_dir):
-            logger.warning(f"Checkpoint directory {checkpoint_dir} does not exist. Starting from scratch.")
-        else:
-            # List all files in the directory to verify
-            all_files = os.listdir(checkpoint_dir)
-            logger.info(f"Files in checkpoint directory: {all_files}")
-
-            # Filter for checkpoint files
-            checkpoints = [f for f in all_files if f.endswith('.pt') and f.startswith('checkpoint_epoch_')]
-            logger.info(f"Found checkpoint files: {checkpoints}")
-
-            if checkpoints:
-                # Find the latest checkpoint by epoch number
-                latest_checkpoint = max(checkpoints, key=lambda x: int(x.split('_')[2].split('.')[0]))
-                checkpoint_path = os.path.join(checkpoint_dir, latest_checkpoint)
-
-                logger.info(f"Loading checkpoint from {checkpoint_path}")
-                checkpoint = torch.load(checkpoint_path, map_location=device)
-                model.load_state_dict(checkpoint['model_state_dict'])
-                optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-                start_epoch = checkpoint['epoch']
-
-                logger.info(f"Resuming training from epoch {start_epoch + 1}")
-
-                # Update args.epochs to run the remaining epochs
-                args.epochs = max(args.epochs, start_epoch + 1)
+            if not os.path.exists(checkpoint_dir):
+                logger.warning(f"Checkpoint directory {checkpoint_dir} does not exist. Starting from scratch.")
             else:
-                logger.info("No checkpoints found. Starting from scratch.")
+                # List all files in the directory to verify
+                all_files = os.listdir(checkpoint_dir)
+                logger.info(f"Files in checkpoint directory: {all_files}")
 
-    # Train the model
-    logger.info("Starting training...")
-    training_history = train_model(
-        model=model,
-        train_loader=train_loader,
-        val_loader=val_loader,
-        loss_fn=loss_fn,
-        device=device,
-        num_epochs=args.epochs,
-        start_epoch=(start_epoch + 1) if args.resume and 'start_epoch' in locals() else 0
-    )
+                # Filter for checkpoint files
+                checkpoints = [f for f in all_files if f.endswith('.pt') and f.startswith('checkpoint_epoch_')]
+                logger.info(f"Found checkpoint files: {checkpoints}")
+
+                if checkpoints:
+                    # Find the latest checkpoint by epoch number
+                    latest_checkpoint = max(checkpoints, key=lambda x: int(x.split('_')[2].split('.')[0]))
+                    checkpoint_path = os.path.join(checkpoint_dir, latest_checkpoint)
+
+                    logger.info(f"Loading checkpoint from {checkpoint_path}")
+                    checkpoint = torch.load(checkpoint_path, map_location=device)
+                    model.load_state_dict(checkpoint['model_state_dict'])
+                    optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+                    start_epoch = checkpoint['epoch']
+
+                    logger.info(f"Resuming training from epoch {start_epoch + 1}")
+
+                    # Update args.epochs to run the remaining epochs
+                    args.epochs = max(args.epochs, start_epoch + 1)
+                else:
+                    logger.info("No checkpoints found. Starting from scratch.")
+
+        # Train the model
+        logger.info("Starting training...")
+        training_history = train_model(
+            model=model,
+            train_loader=train_loader,
+            val_loader=val_loader,
+            loss_fn=loss_fn,
+            device=device,
+            num_epochs=args.epochs,
+            start_epoch=(start_epoch + 1) if args.resume and 'start_epoch' in locals() else 0
+        )
 
     # Evaluate on tests set
     logger.info("Evaluating on tests set...")

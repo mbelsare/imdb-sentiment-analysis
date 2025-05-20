@@ -320,6 +320,10 @@ def plot_training_history(history):
 
     plt.tight_layout()
 
+    # Ensure the logs directory exists
+    logs_dir = os.path.join(LOGS_DIR)
+    os.makedirs(logs_dir, exist_ok=True)
+
     # Save the plot
     plot_path = os.path.join(LOGS_DIR, f"training_history_{timestamp}.png")
     plt.savefig(plot_path)

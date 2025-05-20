@@ -12,6 +12,7 @@ MODELS_DIR = os.path.join(ROOT_DIR, "models")
 LOGS_DIR = os.path.join(ROOT_DIR, "logs")
 
 # Create directories if they don't exist
+os.makedirs(DATA_DIR, exist_ok=True)
 os.makedirs(MODELS_DIR, exist_ok=True)
 os.makedirs(LOGS_DIR, exist_ok=True)
 
