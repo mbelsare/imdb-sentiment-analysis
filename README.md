@@ -145,10 +145,44 @@ python3 buildops/sentiment_analysis/workflow/jobs/run_experiments.py --use_exist
 
 #### Performance Metrics
 
-* Accuracy: 93.2%
-* F1 Score: 0.93
-* Precision: 0.92
+* Accuracy: 94.2%
+* F1 Score: 0.94
+* Precision: 0.94
 * Recall: 0.94
+* ROC AUC: 0.98
+
+#### Evaluation metrics
+```
+python3 buildops/sentiment_analysis/workflow/jobs/model_trainer.py --evaluate-only                                                                                2 ↵  11:26:20 
+2025-05-20 11:26:31,226 - buildops.sentiment_analysis.mlobjects.utils.model_utils - INFO - Random seed set to 42
+2025-05-20 11:26:31,226 - buildops.sentiment_analysis.mlobjects.models.train - INFO - Using CPU
+Project root: buildops/sentiment_analysis
+CSV path: buildops/sentiment_analysis/dataset/imdb_dataset.csv
+2025-05-20 11:26:31,226 - buildops.sentiment_analysis.data.data_loader - INFO - Loading dataset from buildops/sentiment_analysis/dataset/imdb_dataset.csv
+2025-05-20 11:26:32,466 - buildops.sentiment_analysis.data.data_loader - INFO - Loaded 50000 reviews
+2025-05-20 11:26:32,793 - buildops.sentiment_analysis.data.data_loader - INFO - Train set: 40000 samples
+2025-05-20 11:26:32,793 - buildops.sentiment_analysis.data.data_loader - INFO - Validation set: 5000 samples
+2025-05-20 11:26:32,793 - buildops.sentiment_analysis.data.data_loader - INFO - Test set: 5000 samples
+2025-05-20 11:26:34,298 - __main__ - INFO - Loading model from buildops/sentiment_analysis/models/sentiment_model/final_model.pt
+2025-05-20 11:26:34,865 - __main__ - INFO - Evaluating on tests set...
+2025-05-20 11:34:52,851 - buildops.sentiment_analysis.workflow.jobs.model_evaluator - INFO - Test Accuracy: 0.9426
+2025-05-20 11:34:52,851 - buildops.sentiment_analysis.workflow.jobs.model_evaluator - INFO - Test F1 Score: 0.9426
+2025-05-20 11:34:52,851 - buildops.sentiment_analysis.workflow.jobs.model_evaluator - INFO - Test Precision: 0.9426
+2025-05-20 11:34:52,851 - buildops.sentiment_analysis.workflow.jobs.model_evaluator - INFO - Test Recall: 0.9426
+2025-05-20 11:34:52,851 - buildops.sentiment_analysis.workflow.jobs.model_evaluator - INFO - ROC AUC: 0.9833
+2025-05-20 11:34:52,852 - buildops.sentiment_analysis.workflow.jobs.model_evaluator - INFO - Confusion Matrix:
+[[2317  145]
+ [ 142 2396]]
+2025-05-20 11:34:52,856 - buildops.sentiment_analysis.workflow.jobs.model_evaluator - INFO - Classification Report:
+              precision    recall  f1-score    support
+Negative       0.942253  0.941105  0.941679  2462.0000
+Positive       0.942936  0.944050  0.943493  2538.0000
+accuracy       0.942600  0.942600  0.942600     0.9426
+macro avg      0.942594  0.942578  0.942586  5000.0000
+weighted avg   0.942600  0.942600  0.942599  5000.0000
+2025-05-20 11:34:52,856 - buildops.sentiment_analysis.mlobjects.utils.model_utils - INFO - Metrics saved to buildops/sentiment_analysis/logs/test_metrics.json
+2025-05-20 11:34:52,856 - __main__ - INFO - Training and evaluation complete!
+```
 
 #### Visualizations
 The project includes comprehensive visualization tools:

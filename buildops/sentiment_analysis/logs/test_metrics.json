@@ -42,7 +42,7 @@
     },
     "roc_auc": 0.9832817374126118,
     "plots": {
-        "confusion_matrix": "/Users/mbelsare/PycharmProjects/imdb-sentiment-analysis/buildops/sentiment_analysis/logs/confusion_matrix.png",
-        "roc_curve": "/Users/mbelsare/PycharmProjects/imdb-sentiment-analysis/buildops/sentiment_analysis/logs/roc_curve.png"
+        "confusion_matrix": "buildops/sentiment_analysis/logs/confusion_matrix.png",
+        "roc_curve": "buildops/sentiment_analysis/logs/roc_curve.png"
     }
 }
